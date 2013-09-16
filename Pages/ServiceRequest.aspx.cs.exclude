@@ -1,0 +1,115 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+
+public partial class Pages_ServiceRequest : WebForm
+{
+    ActionMode mode = ActionMode.View;
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        mode = !string.IsNullOrEmpty(Request.QueryString["mode"]) ? (ActionMode)Convert.ToInt16(Request.QueryString["mode"]) : ActionMode.View;
+        if (!this.IsPostBack)
+        {
+            if (mode == ActionMode.View)
+            {
+                multiview.ActiveViewIndex = 0;
+                DataBind();
+            }
+            else
+            {
+                if (mode == ActionMode.Edit)
+                    EditMode();
+                multiview.ActiveViewIndex = 1;
+            }
+        }
+        InitialBaseControl();
+    }
+    void InitialBaseControl()
+    {
+        txtCustomer.Attributes.Add("onblur", "service.bindAddress($(\"#\"+this.id).val());");
+    }
+    public override void DataBind()
+    {
+        DataView dv = Program.Connection.Select("*",
+            @"
+                ServiceRequest SR 
+                INNER JOIN Customer C ON SR.CustomerID=C.CustomerID
+                INNER JOIN Users U ON SR.ServiceBY=U.UserID", "");
+        grid.DataSource = dv;
+        grid.CheckListDataField = "RequestID";
+        grid.DataBind();
+    }
+    protected void EditMode(){
+        DataView dv = Program.Connection.Select("*",
+            @"
+                ServiceRequest SR 
+                INNER JOIN Customer C ON SR.CustomerID=C.CustomerID
+                INNER JOIN Users U ON SR.ServiceBY=U.UserID", string.Format("WHERE RequestID='{0}'",Request.QueryString["id"]));
+        foreach (DataRow row in dv.Table.Rows) {
+            txtCustomer.Text = row["Name"].ToString();
+            txtAddress.Text = row["Address"].ToString();
+            txtAttnName.Text = row["AttnName"].ToString();
+            txtTel.Text = row["Tel"].ToString();
+            txtFax.Text = row["Fax"].ToString();
+        }
+    }
+    [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethod()]
+    public static string[] GetCompletionList(string prefixText, int count)
+    {
+        if (string.IsNullOrEmpty(prefixText))
+            return null;
+        else
+        {
+            DataView dv = CustomerProvider.CustomerList();
+            DataRow[] rows = dv.Table.Select(string.Format("Name LIKE '%{0}%'", prefixText));
+            List<string> list = new List<string>();
+            foreach (DataRow row in rows)
+            {
+                list.Add(row["Name"].ToString());
+            }
+            return list.ToArray();
+        }
+    }
+    [System.Web.Services.WebMethod()]
+    public static object AddressByName(string search)
+    {
+        DataView dv = CustomerProvider.CustomerList();
+        DataRow[] rows = dv.Table.Select(string.Format("Name LIKE '%{0}%'", search));
+        Customer c = new Customer();
+        if (rows.Count() > 0)
+        {
+            foreach (DataRow dr in rows)
+            {
+                c.CustomerID = dr["CustomerID"].ToString();
+                int group;
+                if (int.TryParse(dr["CustomerGroup"].ToString(), out group))
+                    c.CustomerGroup = group;
+                int type;
+                if (int.TryParse(dr["CustomerType"].ToString(), out type))
+                    c.CustomerGroup = type;
+                c.Name = dr["Name"].ToString();
+                c.Address = dr["Address"].ToString();
+                c.Tel = dr["Tel"].ToString();
+                c.Fax = dr["Fax"].ToString();
+                c.AttnName = dr["AttnName"].ToString();
+            }
+            return c;
+        }
+        else
+            return null;
+    }
+    protected void grid_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            HyperLink GridItem = (HyperLink)e.Row.FindControl("GridItem");
+            GridItem.Text = DataBinder.Eval(e.Row.DataItem, "SONUM").ToString();
+            GridItem.Attributes.Add("onclick", string.Format("page.edit('{0}','ServiceRequest');",DataBinder.Eval(e.Row.DataItem,"RequestID").ToString()));
+        }
+    }
+}

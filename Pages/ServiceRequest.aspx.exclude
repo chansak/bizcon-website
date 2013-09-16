@@ -1,0 +1,229 @@
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPages/MasterPage.master" AutoEventWireup="true" CodeFile="ServiceRequest.aspx.cs" Inherits="Pages_ServiceRequest" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="content" runat="Server">
+    <div class="border">
+        <asp:MultiView ID="multiview" runat="server">
+            <asp:View ID="view" runat="server">
+                <span class="lead">Service Request</span>
+                <div class="btn-toolbar">
+                    <div class="btn-group">
+                        <a href="#" onclick="page.add('ServiceRequest');" class="btn btn-small btn-success">เพิ่มใหม่</a>
+                        <asp:Button ID="btnDelete" CssClass="btn btn-small" Text="ลบ" runat="server" OnClientClick="return grid.delete();" />
+                    </div>
+                </div>
+                <Gadget:DataGridView ID="grid" CssClass="table table-bordered table-hover" AutoGenerateCheckList="true" AllowPaging="true" AllowSorting="true" OnRowDataBound="grid_RowDataBound" runat="server">
+                    <Columns>
+                        <asp:TemplateField HeaderText="เลขที่ใบสั่งซื้อ">
+                            <ItemTemplate>
+                                <asp:HyperLink ID="GridItem" runat="server"></asp:HyperLink>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <%--<asp:BoundField HeaderText="เลขที่ใบสั่งซื้อ" DataField="SONUM" SortExpression="" />--%>
+                        <asp:BoundField HeaderText="ชื่อลูกค้า" DataField="Name" SortExpression="Name" />
+                        <asp:BoundField HeaderText="ประเภทการบริการ" DataField="ServiceType" SortExpression="ServiceType" />
+                        <asp:BoundField HeaderText="ผู้ปฏิบัติงาน" DataField="DisplayName" SortExpression="DisplayName" />
+                        <asp:BoundField HeaderText="วันที่ดำเนินงาน" DataField="ServiceDate" SortExpression="ServiceDate" />
+                    </Columns>
+                </Gadget:DataGridView>
+            </asp:View>
+            <asp:View ID="edit" runat="server">
+                <asp:UpdatePanel ID="updatepanel" runat="server">
+                    <ContentTemplate>
+                        <ul class="nav nav-tabs" id="myTab">
+                            <li class="active"><a href="#request" data-toggle="tab">Service Request Form</a></li>
+                            <li><a href="#response" data-toggle="tab">Operation Form</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="request">
+                                <h2>Service Request Base Description</h2>
+                                <div class="bs-docs-customer">
+                                    <div class="form-horizontal">
+                                        <div class="control-group">
+                                            <label class="control-label" for="txtTitle">Name</label>
+                                            <div class="controls">
+                                                <div class="input-prepend input-append">
+                                                    <span class="add-on">auto</span>
+                                                    <asp:TextBox ID="txtCustomer" CssClass="input-xlarge" runat="server"></asp:TextBox>
+                                                    <div class="btn-group">
+                                                        <button class="btn dropdown-toggle" data-toggle="dropdown">
+                                                            Options
+                                                    <span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a href="#" onclick="page.getUrl('Customer.aspx');"><i class="icon-plus"></i>Add New Customer</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <asp:HiddenField ID="hiddenCustomerID" runat="server" />
+                                                <asp:AutoCompleteExtender ID="customer_autocomplete"
+                                                    runat="server"
+                                                    CompletionListCssClass="completionList"
+                                                    CompletionListItemCssClass="listItem"
+                                                    CompletionListHighlightedItemCssClass="itemHighlighted"
+                                                    MinimumPrefixLength="2"
+                                                    ServiceMethod="GetCompletionList"
+                                                    TargetControlID="txtCustomer"
+                                                    UseContextKey="True">
+                                                </asp:AutoCompleteExtender>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="txtTitle">Address</label>
+                                            <div class="controls">
+                                                <asp:TextBox ID="txtAddress" ReadOnly="true" CssClass="input-xxlarge uneditable-input" TextMode="MultiLine" Rows="3" runat="server"></asp:TextBox>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="txtTitle">Attn Name</label>
+                                            <div class="controls">
+                                                <asp:TextBox ID="txtAttnName" ReadOnly="true" CssClass="uneditable-input" runat="server"></asp:TextBox>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label"></label>
+                                            <div class="controls form-inline">
+                                                <label>Tel : </label>
+                                                <asp:TextBox ID="txtTel" ReadOnly="true" CssClass="uneditable-input" runat="server"></asp:TextBox>
+                                                <label>Fax : </label>
+                                                <asp:TextBox ID="txtFax" ReadOnly="true" CssClass="uneditable-input" runat="server"></asp:TextBox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bs-docs-part">
+                                    <div class="form-horizontal">
+                                        <div class="control-group">
+                                            <label class="control-label" for="txtTitle"></label>
+                                            <div class="controls form-inline">
+                                                <label>Part No: </label>
+                                                <asp:TextBox ID="txtPartNo" CssClass="input-medium" runat="server"></asp:TextBox>
+                                                <label>Model: </label>
+                                                <asp:TextBox ID="txtModel" CssClass="input-medium" runat="server"></asp:TextBox>
+                                                <label>Serial: </label>
+                                                <asp:TextBox ID="txtSerial" CssClass="input-medium" runat="server"></asp:TextBox>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="txtTitle"></label>
+                                            <div class="controls form-inline">
+                                                <asp:TextBox ID="txtPartDescription" TextMode="MultiLine" placeholder="part description" Rows="3" CssClass="input-xxlarge" runat="server"></asp:TextBox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bs-docs-service">
+                                    <div class="form-horizontal">
+                                        <div class="control-group">
+                                            <label class="control-label" for="txtTitle"></label>
+                                            <div class="controls form-inline">
+                                                <asp:TextBox ID="txtServices" TextMode="MultiLine" Rows="5" placeholder="service list" CssClass="input-xxlarge" runat="server"></asp:TextBox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="response">
+                                <div class="bs-docs-oper">
+                                    <div class="form-horizontal">
+                                        <div class="control-group">
+                                            <label class="control-label" for="txtTitle">Service By</label>
+                                            <div class="controls">
+                                                <asp:TextBox ID="txtServiceBy" runat="server"></asp:TextBox>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="txtTitle">Service Date</label>
+                                            <div class="controls">
+                                                <div class="input-append">
+                                                    <asp:TextBox ID="txtStartDate" runat="server"></asp:TextBox>
+                                                    <button class="btn" id="btnStartDate" type="button"><i class="icon-time"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="txtTitle">Complete Date</label>
+                                            <div class="controls">
+                                                <asp:TextBox ID="txtEndDate" runat="server"></asp:TextBox>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="txtTitle">Service Status</label>
+                                            <div class="controls form-inline">
+                                                <label class="radio">
+                                                    <asp:RadioButtonList ID="rdStatus" runat="server">
+                                                        <asp:ListItem Text="Complete" Value="1"></asp:ListItem>
+                                                        <asp:ListItem Text="InComplete" Value="0"></asp:ListItem>
+                                                    </asp:RadioButtonList>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="txtTitle">Next Service Date</label>
+                                            <div class="controls">
+                                                <asp:TextBox ID="txtNextServiceDate" runat="server"></asp:TextBox>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="txtTitle">Comment</label>
+                                            <div class="controls">
+                                                <asp:TextBox ID="txtComment" TextMode="MultiLine" CssClass="input-xxlarge" Rows="3" runat="server"></asp:TextBox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <asp:Button ID="btnSave" CssClass="btn btn-primary" Text="บันทึก" runat="server" />
+                                    <a href="#" class="btn" onclick="page.goBack();">ยกเลิก</a>
+                                </div>
+                            </div>
+                        </div>
+                    </ContentTemplate>
+                </asp:UpdatePanel>
+            </asp:View>
+        </asp:MultiView>
+    </div>
+    <script src="../Javascript/jquery-1.9.1.min.js"></script>
+    <script src="../Scripts/jquery-ui-1.10.2.min.js"></script>
+    <script src="../Scripts/modernizr-2.6.2.js"></script>
+    <script src="../Javascript/bootstrap.min.js"></script>
+    <script src="../Javascript/BizconFramework.js"></script>
+    <script src="../Javascript/page.js"></script>
+    <script type="text/javascript">
+        var grid={
+            edit:function(){
+                return <%=grid.ClientID%>.OnEdit(); 
+            },
+            delete:function(){
+                return <%=grid.ClientID%>.OnDelete(); 
+            }
+        }
+        var service={
+            bindAddress:function(name){
+                PageMethods.AddressByName(name,
+                    function(result){
+                        if(result !=null)
+                        {
+                            $("#<%=hiddenCustomerID.ClientID%>").val(result.CustomerID);
+                            $("#<%=txtAddress.ClientID%>").val(result.Address);
+                            $("#<%=txtAttnName.ClientID%>").val(result.txtAttnName);
+                            $("#<%=txtTel.ClientID%>").val(result.Tel);
+                            $("#<%=txtFax.ClientID%>").val(result.Fax);
+                        }
+                    },
+                    function(){
+                        alert("Error");
+                    })
+            }
+        };
+        //if(!Modernizr.inputtypes.date){
+            $("#<%=txtStartDate.ClientID%>").datepicker();
+            $("#<%=txtEndDate.ClientID%>").datepicker();
+            $("#<%=txtNextServiceDate.ClientID%>").datepicker();
+        //}
+    </script>
+</asp:Content>
+

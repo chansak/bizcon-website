@@ -1,0 +1,37 @@
+﻿#slideshow {
+    left: 20px;
+}
+
+#nav {
+    width: 100%;
+    height: 80px;
+    margin: 15px;
+}
+
+    #nav li {
+        width: 50px;
+        float: left;
+        margin: 8px;
+        list-style: none;
+    }
+
+    #nav a {
+        width: 50px;
+        padding: 3px;
+        display: block;
+        border: 1px solid #ccc;
+    }
+
+    #nav li.activeSlide a {
+        /*background: #88f;*/
+        border:solid 1px silver;
+    }
+
+    #nav a:focus {
+        outline: none;
+    }
+
+    #nav img {
+        border: none;
+        display: block;
+    }

@@ -1,0 +1,18 @@
+﻿.completionList
+{
+    overflow:auto;
+    list-style:none;
+    background-color: #fff;
+    border: solid 1px silver;
+    margin: 0px;
+    padding: 2px;
+    font-size:small;
+}
+.listItem
+{
+    color: #000;
+}
+.itemHighlighted
+{
+    background-color: #eee;
+}

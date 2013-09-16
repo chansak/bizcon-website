@@ -1,0 +1,54 @@
+﻿/* Dialog */
+#dialog-bg
+{
+	position:absolute;
+	z-index:500;
+	top: 0px;
+	left: 0px;
+	background:#000;
+	filter:alpha(opacity=60);
+	-moz-opacity: 0.6;
+	opacity: 0.6;
+	clear:both; float:none;
+    overflow:auto;
+}
+.dialog-head
+{
+clear:both; float:none; height:35px; line-height:35px; margin:0px;	background:#FFF; border-bottom:1px solid #CCC;background:#fff url(../../Shared/Images/BG/bg-clouds.jpg) no-repeat center top;
+}
+#dialog-title
+{
+	margin:0px; padding:1px 5px; font-size:11pt; float:left;
+}
+.dialog-menu
+{
+ width:50px; float:right;padding:5px; text-align:right; 
+}
+a.dialog-btnClose
+{
+ width:50px; height:25px; margin-top:0px; display:block; background:url(images/tools/close_icon2.gif) no-repeat center top; float:right
+}
+a.dialog-btnClose:hover
+{
+	_margin-top:0px; background:url(images/tools/close_icon2.gif) no-repeat center top;	
+}
+.dialog-body
+{
+    margin:0px; padding:0px; background:#FFF; width:100%;
+}
+.dialog-page
+{
+	position:absolute;
+	z-index:1000;
+	text-align:left;
+	margin:0px;
+    background:#FFF;
+    border: 1px solid #666;
+    padding: 10px;
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    border-radius:5px;
+    box-shadow: 0px 0px 10px #d9d9d9;
+    -moz-box-shadow: 0px 0px 10px #d9d9d9;
+    -webkit-box-shadow: 0px 0px 10px #d9d9d9;
+}

@@ -1,0 +1,28 @@
+﻿
+.inputrow 
+{
+ min-height:22px; height:auto; _height:22px; line-height:22px; margin:7px 0px;  clear:both; float:none;
+}
+.inputrow .label
+{
+  clear:both; float:left;min-height:22px; color:#797979; height:auto; text-align:left;width:20%;text-align:right;padding-right:20px;
+}
+.input
+{
+	min-height:22px; float:left; min-height:22px;
+}
+    .input textarea {
+        margin-bottom:8px;
+    }
+.inputrow textarea.large {
+}
+.inputrow textarea.larger {
+}
+.inputrow textarea.x-large {
+}
+.inputrow input.large{
+}
+.inputrow input.larger{
+}
+.inputrow input.x-large{
+}

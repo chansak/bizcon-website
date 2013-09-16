@@ -1,0 +1,70 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPages_MasterPage" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Bizcon Solutions</title>
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script src="../Scripts/jquery-1.9.1.js"></script>
+    <script src="../Scripts/Request.QueryString.js"></script>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <asp:ScriptManager ID="scripmanager" EnablePageMethods="true" runat="server"></asp:ScriptManager>
+        <div class="wrap">
+            <Gadget:MainMenu ID="menu" runat="server" />
+            <div class="container">
+                <h5>Bizcon Solutions</h5>
+                <asp:ContentPlaceHolder ID="content" runat="server">
+                </asp:ContentPlaceHolder>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="container">
+                <div class="span3">
+                    <h4>ABOUT US</h4>
+                    <ul>
+                        <li>Company Overview</li>
+                        <li>Management Team</li>
+                        <li>Corporate governance</li>
+                        <li>Corporate social responsibility</li>
+                        <li>Offices</li>
+                    </ul>
+                </div>
+                <div class="span4">
+                    <h4>Solutions</h4>
+                    <ul>
+                        <li>IT Continuity Solutions</li>
+                        <li>System Infrastructure</li>
+                        <li>IT/Network Performance Improvement</li>
+                        <li>IT Security</li>
+                    </ul>
+                </div>
+                <%--<div class="span3">
+                    <h4>Partner</h4>
+                    <ul>
+                        <li>HP 3PAR Storage</li>
+                        <li>HP ESSN</li>
+                        <li>Microsoft Windows Server</li>
+                        <li>Symantec</li>
+                        <li>Steelhead Appliance</li>
+                        <li>Palo Alto</li>
+                        <li>VMware ESX</li>
+                        <li>Web Applications Firewall</li>
+                    </ul>
+                </div>--%>
+                <div class="span12">
+                    © Bizcon Solutions Inc. | Partners
+                                    <%--<span class="inline">
+                                        <img src="../Images/Partners/HP.png" class="partner-icon" />
+                                        <img src="../Images/Partners/windows.png" class="partner-icon" />
+                                        <img src="../Images/Partners/vmware.png" class="partner-icon" />
+                                        <img src="../Images/Partners/symantec.png" class="partner-icon" />
+                                    </span>--%>
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
